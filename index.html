@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎂</text></svg>">
+    <title>Nicol: Success</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@100;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. Estilos Base y Animaciones */
+        body {
+            background-color: #07070F;
+            font-family: 'Playfair Display', serif;
+        }
+        .font-sans-alt {
+             font-family: 'Montserrat', sans-serif;
+        }
+        .text-glow-intense {
+            text-shadow: 0 0 25px rgba(255, 105, 180, 0.9), 0 0 10px rgba(255, 105, 180, 0.7);
+        }
+        .shadow-pink-intense {
+            box-shadow: 0 10px 15px -3px rgba(236, 72, 153, 0.3), 0 4px 6px -2px rgba(236, 72, 153, 0.2);
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-reveal {
+            animation-name: fadeInUp;
+            animation-duration: 1.5s;
+            animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+            animation-fill-mode: forwards;
+            opacity: 0; 
+        }
+        @keyframes pulse-sutil {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.03); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .hero-heartbeat {
+            animation: pulse-sutil 4s infinite ease-in-out;
+        }
+
+        /* 2. CLAVE DEL BLOQUEO (Oculta el contenido del puzle) */
+        #puzle-content {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 1s ease-in-out, max-height 1.5s ease-in-out;
+        }
+        #puzle-content.unlocked {
+            opacity: 1;
+            max-height: 5000px; /* Suficientemente grande para contener todo */
+            overflow: visible;
+        }
+
+        /* 3. ESTILO DEL CIFRADO VISUAL Y REVELACIÓN INTERACTIVA */
+        .cifrado-visual {
+            filter: blur(4px) brightness(0.7);
+            transition: filter 0.8s ease-out, transform 0.5s;
+            cursor: pointer;
+        }
+        .cifrado-visual.revelado {
+            filter: none;
+            cursor: default;
+            transform: scale(1.01); 
+            pointer-events: none; /* Deshabilita clics repetidos */
+        }
+        
+        /* Estilo para el Modal */
+        .modal-animated-content {
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .modal-active .modal-animated-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="text-white">
+
+    <section id="hero" class="relative h-screen flex items-center justify-center p-4 overflow-hidden">
+        
+        <div class="absolute inset-0 bg-gradient-to-br from-black via-gray-950 to-purple-950 opacity-90"></div>
+        
+        <div class="z-10 text-center max-w-7xl mx-auto hero-heartbeat">
+            
+            <h1 class="text-3xl sm:text-5xl lg:text-7xl font-light italic leading-snug text-gray-300 font-serif animate-reveal" 
+                style="animation-delay: 0.5s;">
+                **Atención, Nicol.** Esto es un recordatorio urgente de por qué...
+            </h1>
+            
+            <p class="text-5xl sm:text-7xl lg:text-[10rem] font-black mt-6 font-sans-alt text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-red-600 tracking-tighter text-glow-intense animate-reveal" 
+               style="animation-delay: 1.5s;">
+                ¡ERES LA MEJOR!
+            </p>
+
+             <p class="text-lg sm:text-xl mt-6 text-red-400 font-sans-alt animate-reveal" style="animation-delay: 2.5s;">
+                **ACCESO RESTRINGIDO.** Desbloquea el protocolo para continuar.
+            </p>
+            
+        </div>
+    </section>
+
+    ---
+
+    <section id="message" class="py-20 md:py-32 bg-gray-900 border-t border-b border-pink-800/70">
+        <div class="container mx-auto px-4 max-w-4xl text-center">
+            
+            <div id="quiz-container" class="mb-16 animate-reveal" style="animation-delay: 0.2s;">
+                <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 text-purple-400 font-sans-alt">
+                    Protocolo de Desbloqueo [2 Fallos Máx]
+                </h2>
+                <p class="text-lg sm:text-xl text-gray-400 mb-6">Pregunta: ¿Cuál es el rasgo tuyo que mejor ilumina una habitación?</p>
+                
+                <div class="flex flex-col sm:flex-row justify-center max-w-md mx-auto">
+                    <input type="text" id="quiz-answer" placeholder="Introduce la clave de validación..." 
+                           class="w-full p-3 text-lg bg-gray-800 border border-purple-600 sm:rounded-l-lg sm:rounded-t-none rounded-t-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-pink-300 placeholder-gray-500 mb-2 sm:mb-0">
+                    <button onclick="checkQuiz()" class="w-full sm:w-auto bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 sm:rounded-r-lg rounded-b-lg transition duration-300">
+                        Validar
+                    </button>
+                </div>
+                <p id="quiz-feedback" class="mt-4 text-red-400"></p>
+            </div>
+            <div id="puzle-content" class="space-y-10 md:space-y-16 text-lg sm:text-xl md:text-2xl text-gray-300 font-light">
+                
+                <div class="message-paragraph animate-reveal opacity-0" style="animation-delay: 0.5s;">
+                    <div id="fragment-1" class="p-6 bg-gray-800/50 rounded-xl shadow-pink-intense border-l-4 border-purple-500 cifrado-visual" onclick="revealFragment(this)">
+                        <p class="leading-relaxed text-pink-300 font-semibold">
+                            Aunque el día ya pasó, la **celebración sigue en pie 🎉** y debe ser tan grande como tu valor. Nicol, esta página es para ti: porque mereces **más de un día para festejar lo increíble que eres** como persona y profesional. **¡Feliz nuevo año de vida, que venga cargado de momentos hermosos y grandes logros!**
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message-paragraph animate-reveal opacity-0" style="animation-delay: 1s;">
+                    <div id="fragment-2" class="p-6 bg-gray-800/50 rounded-xl shadow-pink-intense border-l-4 border-purple-500 cifrado-visual" onclick="revealFragment(this)">
+                        <p class="leading-relaxed text-pink-300 font-semibold">
+                            Dicen que lo bueno se hace esperar… por eso hoy seguimos celebrándote, Nicol 🥳. Que este nuevo ciclo te traiga **felicidad inquebrantable, salud plena y muchos éxitos que superen todas tus expectativas.** ¡Nunca es tarde para desearte todo lo mejor en tu camino!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message-paragraph animate-reveal opacity-0" style="animation-delay: 1.5s;">
+                    <div id="fragment-3" class="p-6 bg-gray-800/50 rounded-xl shadow-pink-intense border-l-4 border-purple-500 cifrado-visual" onclick="revealFragment(this)">
+                        <p class="leading-relaxed text-pink-300 font-semibold">
+                            Tu cumpleaños fue solo el inicio **🎂✨, pero la alegría que irradias es permanente**. Nicol, esta página es un recordatorio de que mereces ser celebrada no solo un día, sino todo el año. **¡Que cada instante de este nuevo capítulo esté lleno de esa alegría, propósito y la fuerza para alcanzar tus sueños!**
+                        </p>
+                    </div>
+                </div>
+
+                <div class="message-paragraph animate-reveal opacity-0" style="animation-delay: 2s;">
+                    <p class="leading-relaxed p-6 bg-pink-800/20 rounded-xl shadow-pink-intense transition duration-500 hover:scale-[1.01] border-2 border-pink-600/70 text-pink-300 font-semibold">
+                        Y por si acaso alguno de los mensajes encriptados falló: **Tu potencial es la variable más emocionante. Prepárate, porque lo mejor de esta historia aún no tiene fecha de estreno.**
+                    </p>
+                </div>
+                
+            </div>
+            
+        </div>
+    </section>
+
+    ---
+
+    <section id="signoff" class="py-24 text-center bg-gray-950">
+        <div class="max-w-xl mx-auto p-4">
+            <p class="text-2xl sm:text-4xl font-light text-gray-400 mb-8 font-serif animate-reveal" style="animation-delay: 0.5s;">
+                ¡Misión Cumplida! El próximo capítulo de tu historia...
+            </p>
+            
+            <h3 class="text-4xl sm:text-7xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-purple-600 font-sans-alt text-glow-intense animate-reveal" 
+                style="animation-delay: 1.2s;">
+                **TE LLEVARÁ A TU PRÓXIMO GRAN ÉXITO.**
+            </h3>
+        </div>
+    </section>
+
+    <div id="fail-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-gray-900 p-8 rounded-xl shadow-2xl border-4 border-pink-500 text-center max-w-sm w-full modal-animated-content">
+            <h3 class="text-4xl font-black text-red-500 mb-4 font-sans-alt">Protocolo Fallido</h3>
+            <p class="text-2xl text-gray-300 mb-6 font-serif italic">
+                "Habra muchas respuestas pero tu sonrisa es lo que mas ilumina la vida."
+            </p>
+            <button onclick="closeModal()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+                Entendido
+            </button>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Variables del Quiz ---
+        let quizAttempts = 0;
+        const MAX_FAILURES = 2; 
+        const CORRECT_WORD = "SONRISA"; 
+        
+        // --- FUNCIÓN DEL QUIZ (Maneja intento y desbloqueo) ---
+        function checkQuiz() {
+            const input = document.getElementById('quiz-answer').value.trim().toUpperCase();
+            const feedback = document.getElementById('quiz-feedback');
+            const button = document.querySelector('#quiz-container button');
+            
+            // 1. Desbloqueo por respuesta correcta
+            if (input === CORRECT_WORD) {
+                feedback.textContent = "¡Clave correcta! Mensajes cifrados listos para ser decodificados...";
+                feedback.classList.add('text-green-400');
+                feedback.classList.remove('text-red-400');
+                unlockContent();
+                button.disabled = true;
+                document.getElementById('quiz-answer').disabled = true;
+                return; 
+            }
+
+            // 2. Manejar intentos fallidos
+            quizAttempts++;
+            
+            if (quizAttempts >= MAX_FAILURES) {
+                // Desbloqueo por fallos (activa el modal con la respuesta)
+                showModal();
+                unlockContent(); 
+                button.disabled = true;
+                document.getElementById('quiz-answer').disabled = true;
+                feedback.textContent = "Protocolo de validación fallido. Lee el mensaje emergente.";
+            } else {
+                const remaining = MAX_FAILURES - quizAttempts; 
+                feedback.textContent = `Clave incorrecta. Te quedan ${remaining} intento(s) antes del desbloqueo forzado.`;
+                feedback.classList.add('text-red-400');
+                feedback.classList.remove('text-green-400');
+            }
+        }
+        
+        // --- FUNCIÓN DE DESBLOQUEO DE CONTENIDO (Muestra los mensajes cifrados y oculta el quiz) ---
+        function unlockContent() {
+            // 1. Desbloquea el contenido (muestra la sección de mensajes)
+            document.getElementById('puzle-content').classList.add('unlocked');
+            
+            // 2. OCULTA EL CONTENEDOR DEL QUIZ
+            const quizContainer = document.getElementById('quiz-container');
+            // Usamos una pequeña animación para un efecto de transición más suave
+            quizContainer.style.opacity = '0';
+            setTimeout(() => {
+                 quizContainer.classList.add('hidden');
+            }, 500); // 500ms para que termine la opacidad
+
+            // 3. Inicia la animación de los mensajes
+            handleScroll(); 
+        }
+
+        // --- FUNCIÓN DE REVELACIÓN POR CLIC (Decodifica un mensaje) ---
+        function revealFragment(element) {
+            if (!element.classList.contains('revelado')) {
+                element.classList.add('revelado');
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(50); // Vibración sutil para dispositivos móviles
+                }
+            }
+        }
+
+        // --- FUNCIONES DEL MODAL ---
+        function showModal() {
+            const modal = document.getElementById('fail-modal');
+            modal.classList.add('modal-active');
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('fail-modal');
+            modal.classList.remove('modal-active');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 500);
+        }
+        
+        // --- FUNCIONES DE ANIMACIÓN EN SCROLL ---
+        
+        const messageContainers = document.querySelectorAll('#puzle-content > div');
+        
+        const isVisible = (el) => {
+            const rect = el.getBoundingClientRect();
+            // Mostrar si está al 90% de la altura de la ventana
+            return rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.9; 
+        };
+
+        const handleScroll = () => {
+            let delay = 0; 
+            
+            messageContainers.forEach(container => {
+                // Solo si el contenido está desbloqueado y el elemento no se ha mostrado aún
+                if (document.getElementById('puzle-content').classList.contains('unlocked') && isVisible(container) && container.classList.contains('opacity-0')) {
+                    
+                    container.classList.remove('opacity-0'); 
+                    
+                    container.style.animationName = 'fadeInUp';
+                    container.style.animationDuration = '1.5s';
+                    container.style.animationTimingFunction = 'cubic-bezier(0.25, 1, 0.5, 1)';
+                    container.style.animationFillMode = 'forwards';
+                    container.style.animationDelay = `${delay}s`;
+                    
+                    delay += 0.5; 
+                }
+            });
+        };
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            document.querySelectorAll('#hero .animate-reveal').forEach(el => {
+                el.style.opacity = '1';
+            });
+            
+            messageContainers.forEach(container => container.classList.add('opacity-0'));
+
+            window.addEventListener('scroll', handleScroll);
+        });
+    </script>
+</body>
+</html>
